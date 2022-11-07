@@ -10,8 +10,8 @@
 /*函式實現*/
 #include <p18cxxx.h>
 #include <stdlib.h>
-#include"k18.h"
-#include"lcd1602.h"
+#include "k18.h"
+#include "lcd1602.h"
 #include "delay.h"
 				
 const rom char cgtab[64]={0x08,0x0f,0x12,0x0f,0x0a,0x1f,0x02,0x02,
