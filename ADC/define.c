@@ -5,9 +5,9 @@ const unsigned char DB[]=
 {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f}; //0~9
 
 const unsigned char DB_dot[]=
-{0xbf,0x86,0xdb,0xcf,0xe6,0xed,0xfd,0x87,0xff,0xef}; //0~9(§tÂI)
+{0xbf,0x86,0xdb,0xcf,0xe6,0xed,0xfd,0x87,0xff,0xef}; //0~9(å«é»)
 
-const unsigned char ScanSeg[]={0x02,0x04,0x08,0x20}; //Æß//¤C¬q±½´y
+const unsigned char ScanSeg[]={0x02,0x04,0x08,0x20}; //ä¸ƒæ®µæƒæ
 
 void display (uchar* a)
 {	
@@ -16,15 +16,15 @@ void display (uchar* a)
 	{
 		if (i==2)
 		{
-			PORTD=DB_dot[*(a+i)];  //Œ¢±Na°}¦C¸ê®Æµ¹¤C¬qÅã¥Ü
+			PORTD=DB_dot[*(a+i)];  //å°‡aé™£åˆ—è³‡æ–™çµ¦ä¸ƒæ®µé¡¯ç¤º
 		}
 		else
 		{
-			PORTD=DB[*(a+i)];  //Œ¢±Na°}¦C¸ê®Æµ¹¤C¬qÅã¥Ü
+			PORTD=DB[*(a+i)];  //å°‡aé™£åˆ—è³‡æ–™çµ¦ä¸ƒæ®µé¡¯ç¤º
 		}
 
-		PORTA=*(ScanSeg+i);    //¿ï¾Ü­ş­Ó¤C¬q­n«G
-		DelayMs(2);       //©µ¿ğ2ms		
+		PORTA=*(ScanSeg+i);    //é¸æ“‡å“ªå€‹ä¸ƒæ®µè¦äº®
+		DelayMs(2);       //å»¶é²2ms		
 	}	
 }
 
@@ -55,9 +55,9 @@ uint get_ad(void)
 		adval=adval<<8|ADRESL;
 		sum+=adval;
 	}
-	sum/=30;       //®ø°£ADCªº»~®t­È
-	adcVol=(sum/1023.0)*5.0;  //±N0~1023 Âà¦¨0~5V
-	adcVol=adcVol*(1.0+(30000.0/7500.0));  // ª¾¹D¤ÀÀ£¨DVCC
+	sum/=30;       //æ¶ˆé™¤ADCçš„èª¤å·®å€¼
+	adcVol=(sum/1023.0)*5.0;  //å°‡0~1023 è½‰æˆ0~5V
+	adcVol=adcVol*(1.0+(30000.0/7500.0));  // çŸ¥é“åˆ†å£“æ±‚VCC
 	return (adcVol*100);			
 }
 
