@@ -3,23 +3,7 @@
 /*                                                                 */
 /* Platform   : MAPLAB + MCC18                                     */
 /*              optimize : Enable All                              */
-/* Author     : bozai(Zhang Qibo)                                  */
-/* E-mail     : sudazqb@163.com                                    */
-/* MSN        : zhangqibo_1985@hotmail.com                         */
-/* Date       : 2007-12-01                                         */
-/*******************************************************************/
-/*  2007-12-01: migrate from AVR platform to PIC                   */
-/*  2007-10-21: Rewrite some function, now only suply 4 functions  */
-/*  2007-10-18: Adjust some time & retry count for compatibility   */
-/*              consideration                                      */
-/*  2007-06-16: After reading the spec. in detail, I found some    */
-/*              of the code don't meet the spec., that is after    */
-/*              the last SPI transaction, it need an extra 8 CLK   */
-/*              to finish it's work                                */
-/*  2007-05-04: add read capacity function                         */
-/*  2007-04-21:                                                    */
 /*  Enable some code incase that when SD reset                     */
-/*  faild program can't jump the loop                              */
 /*******************************************************************/
 
 #include<p18cxxx.h>

@@ -3,19 +3,7 @@
 /*                                                                 */
 /* Platform   : MAPLAB + MCC18                                     */
 /*              optimize : Enable All                              */
-/* Author     : bozai(Zhang Qibo)                                  */
-/* E-mail     : sudazqb@163.com                                    */
-/* MSN        : zhangqibo_1985@hotmail.com                         */
-/* Date       : 2007-12-01                                         */
-/*******************************************************************/
-/*2007-12-01: migrate from AVR platform to PIC                     */
-/*2007-11-09: now the songs may placed in any directory, but the   */
-/*            total number of folder the card has should less than */
-/*            127 for we use 512Bytes EEPROM to stored the info    */
-/*2007-10-08: fix a bug (but it never works), so stupid I am,      */ 
-/*            take & as &&                                         */
-/*2006-06-14: still the bug of FAT                                 */
-/*2006-05-04: fix bug of FAT init, add read capacity check         */ 
+/* Author     : DennisLin                                          */ 
 /*******************************************************************/
 
 #include"FAT.h"
@@ -37,7 +25,7 @@ BYTE FAT32_Enable;
 BYTE (* FAT_ReadSector)(DWORD,BYTE *);
 BYTE (* FAT_WriteSector)(DWORD,BYTE *);
 
-//函式指針指向sd卡的讀寫函式
+//函數指標指向sd卡的讀寫函數
 //function pointer to the sd card read & write single block
 //wirte sector are not use in this player
 BYTE (* FAT_ReadSector)(DWORD sector, BYTE * buffer)=MMC_SD_ReadSingleBlock;//device read
