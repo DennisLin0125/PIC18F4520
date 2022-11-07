@@ -3,12 +3,6 @@
 /*                                                                 */
 /* Platform   : AVRStudio4.13 b528 + WinAVR20070122                */
 /*              optimize -0s                                       */
-/* Author     : bozai(Zhang Qibo)                                  */
-/* E-mail     : sudazqb@163.com                                    */
-/* MSN        : zhangqibo_1985@hotmail.com                         */
-/* Date       : 2006-05-09                                         */
-/*******************************************************************/
-/*2006-05-04: fix bug of FAT init, add read capacity check         */ 
 /*******************************************************************/
 
 #ifndef __FAT_H__
@@ -38,7 +32,7 @@
 //#include <stdlib.h>
 
 
-//聲明外部器件讀寫函式
+//聲明外部器件讀寫函數
 //external hardware operating function
 extern BYTE MMC_SD_ReadSingleBlock(DWORD sector, BYTE* buffer);
 extern BYTE MMC_SD_WriteSingleBlock(DWORD sector, BYTE* buffer);
