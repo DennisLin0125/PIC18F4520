@@ -47,7 +47,7 @@ void main(void)
 	TRISA=0x00;  	//RA設定為輸出 鍵盤掃描用
  
 	k18_init();/*K18主板初始化*/  
-    COL8=1;	  //使最左邊的7段顯示			 
+    	COL8=1;	  //使最左邊的7段顯示			 
   	while(1)
   	{    	
 		switch (key())
