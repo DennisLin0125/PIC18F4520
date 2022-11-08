@@ -53,12 +53,12 @@ PIN20 ----------LED- ，背光 －，一般接GND。
 ***********************************************************/ 
 void Delay(INT16U j)
 {
-INT8U i;
+   INT8U i;
 
-for (i=0; i<j; i++)
-{
-   _nop_();
-}
+   for (i=0; i<j; i++)
+   {
+      _nop_();
+   }
 }
 
 /*********************************************************** 
@@ -70,13 +70,13 @@ for (i=0; i<j; i++)
 ***********************************************************/ 
 void LCD_P_Ready(void)
 {
-LCD_DB = 0xFF;
+   LCD_DB = 0xFF;
 
-LCD_RW = 1;
-LCD_RS = 0;
-LCD_E = 1;
-while (LCD_DB&0x80) ;
-LCD_E = 0;
+   LCD_RW = 1;
+   LCD_RS = 0;
+   LCD_E = 1;
+   while (LCD_DB&0x80) ;
+   LCD_E = 0;
 }
 
 /*********************************************************** 
@@ -88,14 +88,14 @@ LCD_E = 0;
 ***********************************************************/ 
 void LCD_P_W_Command(INT8U Command)
 {
-LCD_P_Ready();
+   LCD_P_Ready();
 
-LCD_RW = 0;
-LCD_RS = 0;
-LCD_DB = Command;
-LCD_E = 1;
-Delay(10);
-LCD_E = 0;
+   LCD_RW = 0;
+   LCD_RS = 0;
+   LCD_DB = Command;
+   LCD_E = 1;
+   Delay(10);
+   LCD_E = 0;
 }
 
 /*********************************************************** 
@@ -107,14 +107,14 @@ LCD_E = 0;
 ***********************************************************/ 
 void LCD_P_W_Data(INT8U Data)
 {
-LCD_P_Ready();
+   LCD_P_Ready();
 
-LCD_RW = 0;
-LCD_RS = 1;
-LCD_DB = Data;
-LCD_E = 1;
-Delay(10);
-LCD_E = 0;
+   LCD_RW = 0;
+   LCD_RS = 1;
+   LCD_DB = Data;
+   LCD_E = 1;
+   Delay(10);
+   LCD_E = 0;
 }
 
 /*********************************************************** 
@@ -126,10 +126,10 @@ LCD_E = 0;
 ***********************************************************/ 
 void Ini_LCD(void)
 {
-//復位
-LCD_RET = 0;
-LCD_RET = 1;
+   //復位
+   LCD_RET = 0;
+   LCD_RET = 1;
 
-LCD_P_W_Command(0x0C); //顯示狀態：開，執行時間：72μs//
+   LCD_P_W_Command(0x0C); //顯示狀態：開，執行時間：72μs//
 }
 

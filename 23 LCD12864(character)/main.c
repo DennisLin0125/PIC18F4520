@@ -2,7 +2,6 @@
 /*           12864F液晶屏（自帶漢字型檔、支援SPI）實驗演示程式          */
 /*                                                                 */
 /* 硬件平臺: HL-K18+18F4520   晶振：10MHZ                           */ 
-/* 軟件平臺: MAPLAB+MCC18                                           */
 /* 描述：12864F液晶屏工作在序列模式SPI下，顯示中文字串、英文字元、數字字元*/
 /*******************************************************************/
 /*實驗板配套128x64點陣液晶模組簡介：
@@ -60,27 +59,27 @@ void k18_init(void)
 
 void main(void)
 {
-     unsigned char command_data;
-     k18_init();
-     initlcm();
+	unsigned char command_data;
+	k18_init();
+	initlcm();
 
-  
+
 	//SendCMD(0x00);
-    	delay(100);/*此延時必須要加，否則後面顯示不正常*/
-    	
-    	LCD_wrstr(0x82,"歡迎訪問");/*寫入要顯示的字串*/
-    	LCD_wrstr(0x91,"慧凈電子網站");/*寫入要顯示的字串*/
-    	LCD_wrstr(0x89,"WWW.HJMCU.COM");
-    	
-    	
-    	
-    	 SendCMD(0x98);//在第四行第一列處開始向右顯示
-     
-     SendDat('H');
-     SendDat('L');
-     SendDat('8');
-    	LCD_wrstr(0x9C,"慧");//注意：即使是單箇中文字元，也是屬於字串
-    	
-    	while(1);
+	delay(100);/*此延時必須要加，否則後面顯示不正常*/
+
+	LCD_wrstr(0x82,"歡迎訪問");/*寫入要顯示的字串*/
+	LCD_wrstr(0x91,"電子網站");/*寫入要顯示的字串*/
+	LCD_wrstr(0x89,"WWW.DENNIS.COM");
+
+
+
+	SendCMD(0x98);//在第四行第一列處開始向右顯示
+
+	SendDat('H');
+	SendDat('L');
+	SendDat('8');
+	LCD_wrstr(0x9C,"慧");//注意：即使是單箇中文字元，也是屬於字串
+
+	while(1);
 
 }

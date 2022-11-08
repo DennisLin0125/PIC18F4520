@@ -5,25 +5,15 @@
 /* 開發板設定：開發板上的RP1逆時針旋轉到底，                          */
 /* 光電開關的4個引腳用4根杜邦線和開發板P3的4個引腳同名端相連           */
 /* 用1根杜邦線連線下述插針對：RC2-AN                                 */
-/* 開發平臺: HL-K18+MCC18 
 //直流電機、光電開關需要自己接線
 //本實驗注意事項：直流電機啟動電流較大，最好用外部的DC5V電源供電，
 //如果用電腦USB供電可能完成不了實驗
 //如果一定要用電腦USB供電，電機啟動時要手動轉一下，才能啟動電機，否測會澆壞學習板。 
-//本實驗動手能力較強，接線時一定要小心，否測會燒壞光電管，還有開發板
-//如果因接錯線燒壞配件，開發板的，不在保修範圍內，請你一定要小心接線。                                         */
+//本實驗動手能力較強，接線時一定要小心，否測會燒壞光電管，還有開發板                                         */
 /*******************************************************************/
 //實驗注意事項1：請一定要把  RA2 RA3 RA5 分別接到  RS RW EN位置上
 //實驗注意事項2：如果想程式自己跑，可以斷開P22 P7 中的 1 VPP跳線帽。
 //實驗注意事項3：電壓為5V J1接到1-2 5V位置上。
-//配套實驗程式部分原始碼來源網路，只能參考學習之用，不提供原始碼分析。
-//慧凈電子：《做人人都買得起的PIC微控制器精品》
-//網址：WWW.HLMCU.COM
-//QQ:121350852 
-//開發板版本：HL-K18 HJPIC V3.2
-//實驗版本：V3.2
-//我們的產品收入一部分是贈送給慈善機構的,以免影響到你的善心.大家好,才是真的好（雙方好評）
-//本實驗直流電機啟動電流較大，請另用3V電壓單獨給贈送的直流電機供電，這樣微控制器才能穩定工作。
 #include <p18F4520.h>
 #include "k18.h"
 #include "lcd1602.h"
@@ -48,17 +38,17 @@
 
 struct TIMER_STRUCT
 {
-unsigned int Interval;/*定時器3時間間隔計數器，當Interval累計到250，也就是到S時，Enable就被置1*/
-unsigned char Enable;/*時間到標記，每當Enable=1時，LCD上的數據就被重新整理1次*/
+	unsigned int Interval;/*定時器3時間間隔計數器，當Interval累計到250，也就是到S時，Enable就被置1*/
+	unsigned char Enable;/*時間到標記，每當Enable=1時，LCD上的數據就被重新整理1次*/
 };
 struct TIMER_STRUCT Timer1S;/*定義1S LCD重新整理定時器，用於儲存中間結果（Interval）和最終結果（Enable）*/
 
 
 struct CAPTURE_STRUCT
 {
-unsigned char Flag;/*捕捉是否完成標記*/
-unsigned char Pointer;/*指示已捕捉到第幾個下降沿，捕捉到第1個下降沿時，定時器1清0並啟動，捕捉到第2個下降沿時，定時器1的值被記錄，捕捉任務完成*/
-unsigned long Data;/*儲存完整的捕捉數據*/
+	unsigned char Flag;/*捕捉是否完成標記*/
+	unsigned char Pointer;/*指示已捕捉到第幾個下降沿，捕捉到第1個下降沿時，定時器1清0並啟動，捕捉到第2個下降沿時，定時器1的值被記錄，捕捉任務完成*/
+	unsigned long Data;/*儲存完整的捕捉數據*/
 };
 struct CAPTURE_STRUCT MyTMR1;/*定義捕捉工作暫存器，用於儲存中間結果（Pointer）和最終結果（Flag、LowData、HighData）*/
 
@@ -67,13 +57,16 @@ unsigned char High_TMR1;/*由於被測脈衝週期較長時，TIMER1的16位計�
 
 void PIC18F_High_isr (void);
 void PIC18F_Low_isr (void);
+
 #pragma code high_vector_section=0x8
-void high_vector (void){
-_asm goto PIC18F_High_isr _endasm
+void high_vector (void)
+{
+	_asm goto PIC18F_High_isr _endasm
 }
 #pragma code low_vector_section=0x18
-void low_vector (void){
-_asm goto PIC18F_Low_isr _endasm
+void low_vector (void)
+{
+	_asm goto PIC18F_Low_isr _endasm
 }
 #pragma code
 
@@ -81,37 +74,39 @@ _asm goto PIC18F_Low_isr _endasm
 #pragma interrupt PIC18F_High_isr
 void PIC18F_High_isr (void)
 {
-if(TRUE==PIR1bits.TMR1IF)/*判斷是否TMR1中斷*/
+	if(TRUE==PIR1bits.TMR1IF)/*判斷是否TMR1中斷*/
 	{
-	PIR1bits.TMR1IF=FALSE;/*清TMR1中斷標記*/
-	High_TMR1++;/*TMR1增補高16-23位計數器+1*/
+		PIR1bits.TMR1IF=FALSE;/*清TMR1中斷標記*/
+		High_TMR1++;/*TMR1增補高16-23位計數器+1*/
 	}
 
-if(TRUE==PIR1bits.CCP1IF)/*判斷是否CCP1中斷*/
+	if(TRUE==PIR1bits.CCP1IF)/*判斷是否CCP1中斷*/
 	{
-	PIR1bits.CCP1IF=FALSE;/*清CCP1中斷標記*/
-	if(FALSE==MyTMR1.Flag)/*---捕捉已完成的時，跳過---*/
+		PIR1bits.CCP1IF=FALSE;/*清CCP1中斷標記*/
+		if(FALSE==MyTMR1.Flag)/*---捕捉已完成的時，跳過---*/
 		{
-		if(0==MyTMR1.Pointer)
-			{		/*現在捕捉到的是第1個下降沿*/
-			MyTMR1.Pointer++;/*下降沿捕捉數+1*/
-			TMR1L=0;/*TMR1清0*/
-			TMR1H=0;
-			High_TMR1=0;/*TMR1增補高16-23位計數器清0*/
-			T1CONbits.TMR1ON=TRUE;/*啟動TMR1*/
+			if(0==MyTMR1.Pointer)
+			{		
+				/*現在捕捉到的是第1個下降沿*/
+				MyTMR1.Pointer++;/*下降沿捕捉數+1*/
+				TMR1L=0;/*TMR1清0*/
+				TMR1H=0;
+				High_TMR1=0;/*TMR1增補高16-23位計數器清0*/
+				T1CONbits.TMR1ON=TRUE;/*啟動TMR1*/
 			}
-		else
-			{		/*現在捕捉到的是第2個下降沿*/
-			T1CONbits.TMR1ON=FALSE;/*關閉TMR1*/
-		
-			MyTMR1.Data=High_TMR1;/*High_TMR1、CCPR1H、CCPR1L合併爲32位數*/
-			MyTMR1.Data<<=8;
-			MyTMR1.Data|=CCPR1H;
-			MyTMR1.Data<<=8;
-			MyTMR1.Data|=CCPR1L;
+			else
+			{		
+				/*現在捕捉到的是第2個下降沿*/
+				T1CONbits.TMR1ON=FALSE;/*關閉TMR1*/
 
-			MyTMR1.Pointer=0;/*下降沿捕捉數清0，為下次測量做好準備*/			
-			MyTMR1.Flag=TRUE;/*標記捕捉已經完成*/
+				MyTMR1.Data=High_TMR1;/*High_TMR1、CCPR1H、CCPR1L合併爲32位數*/
+				MyTMR1.Data<<=8;
+				MyTMR1.Data|=CCPR1H;
+				MyTMR1.Data<<=8;
+				MyTMR1.Data|=CCPR1L;
+
+				MyTMR1.Pointer=0;/*下降沿捕捉數清0，為下次測量做好準備*/			
+				MyTMR1.Flag=TRUE;/*標記捕捉已經完成*/
 			}
 		}
 	}
@@ -120,16 +115,16 @@ if(TRUE==PIR1bits.CCP1IF)/*判斷是否CCP1中斷*/
 #pragma interruptlow PIC18F_Low_isr
 void PIC18F_Low_isr (void)
 {
-if(TRUE==PIR2bits.TMR3IF)/*判斷是否TMR3中斷*/
+	if(TRUE==PIR2bits.TMR3IF)/*判斷是否TMR3中斷*/
 	{
-	PIR2bits.TMR3IF=FALSE;/*清TMR3中斷標記*/
-	TMR3H=(65536-11962)/256;/*TMR3置初值*/
-	TMR3L=(65536-11962)%256;
-	Timer1S.Interval++;	
-	if(250==Timer1S.Interval)
+		PIR2bits.TMR3IF=FALSE;/*清TMR3中斷標記*/
+		TMR3H=(65536-11962)/256;/*TMR3置初值*/
+		TMR3L=(65536-11962)%256;
+		Timer1S.Interval++;	
+		if(250==Timer1S.Interval)
 		{
-		Timer1S.Interval=0;
-		Timer1S.Enable=TRUE;/*標記LCD重新整理時間到*/
+			Timer1S.Interval=0;
+			Timer1S.Enable=TRUE;/*標記LCD重新整理時間到*/
 		}
 	}
 }
@@ -188,7 +183,8 @@ void main(void)
 	{
 		while(FALSE==Timer1S.Enable);/*LCD重新整理時間未到時，原地等待*/
 		if(TRUE==MyTMR1.Flag)
-		{		/*---捕捉已完成---*/
+		{		
+			/*---捕捉已完成---*/
 			speed=15*Fosc/alnico_number;/*計算出轉速（轉/分鐘）*/
 			speed/=MyTMR1.Data;
 			LCD_setxy(2,1);

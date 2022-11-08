@@ -6,11 +6,11 @@
 
 void main(void)
 {
-k18_init();/*HL-K18主板初始化*/
+    k18_init();/*HL-K18主板初始化*/
 
-while(1)
-{
- BZ=!BZ;
- Delay10us(250);/*延時250uS*/
-}	
+    while(1)
+    {
+        BZ=!BZ;
+        Delay10us(250);/*延時250uS*/
+    }	
 }

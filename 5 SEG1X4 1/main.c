@@ -9,7 +9,7 @@ void main()
 {
 	unsigned char j;
 	k18_init();/*HL-K18主板初始化*/
-	TRISD=0X00;/*設定D口為輸出**/
+	TRISD=0X00;/*設定PORTD為輸出**/
 
 	while(1)
 	{
