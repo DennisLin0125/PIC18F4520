@@ -1,14 +1,4 @@
-//ÊµÑé×¢ÒâÊÂÏî1£ºÇë¹ØÁËS2ÊýÂë¹Ü¿ª¹Ø£¬´ò¿ªS4µÚ4Î»£¬S3¹Øµô¡£
-//ÊµÑé×¢ÒâÊÂÏî2£ºÈç¹ûÏë³ÌÐò×Ô¼ºÅÜ£¬¿ÉÒÔ¶Ï¿ªP22 P7 ÖÐµÄ 1 VPPÌøÏßÃ±¡£
-//ÊµÑé×¢ÒâÊÂÏî3£ºµçÑ¹Îª5V J1½Óµ½1-2 5VÎ»ÖÃÉÏ¡£
-//ÅäÌ×ÊµÑé³ÌÐò²¿·ÖÔ´ÂëÀ´Ô´ÍøÂç£¬Ö»ÄÜ²Î¿¼Ñ§Ï°Ö®ÓÃ£¬²»Ìá¹©Ô´Âë·ÖÎö¡£
-//»Û¾»µç×Ó£º¡¶×öÈËÈË¶¼ÂòµÃÆðµÄPICµ¥Æ¬»ú¾«Æ·¡·
-//ÍøÖ·£ºWWW.HLMCU.COM
-//QQ:121350852 
-//¿ª·¢°å°æ±¾£ºHL-K18 HJPIC V3.2
-//ÊµÑé°æ±¾£ºV3.2
-//ÎÒÃÇµÄ²úÆ·ÊÕÈëÒ»²¿·ÖÊÇÔùËÍ¸ø´ÈÉÆ»ú¹¹µÄ,ÒÔÃâÓ°Ïìµ½ÄãµÄÉÆÐÄ.´ó¼ÒºÃ,²ÅÊÇÕæµÄºÃ£¨Ë«·½ºÃÆÀ£©
-/*ÒÔÏÂ³ÌÐòÎª8Â·LEDÁ÷Ë®µÆÉÁ¶¯³ÌÐò£¬¾§ÕñÆµÂÊÎª10MHz*/
+/*ä»¥ä¸‹ç¨‹åºä¸º8è·¯LEDæµæ°´ç¯é—ªåŠ¨ç¨‹åºï¼Œæ™¶æŒ¯é¢‘çŽ‡ä¸º10MHz*/
 #include <p18cxxx.h>
 #include "k18.h"
 #include "Delay.h"
@@ -17,18 +7,18 @@ void main(void)
 unsigned char a = 0x01;
 unsigned char  b;
 
-k18_init();/*HL-K18Ö÷°å³õÊ¼»¯*/
+k18_init();/*HL-K18ä¸»æ¿åˆå§‹åŒ–*/
 
-TRISD=0X00;/*ÉèÖÃD¿ÚÎªÊä³ö*/
+TRISD=0X00;/*è®¾ç½®Då£ä¸ºè¾“å‡º*/
 
-COL1=1;/*Ñ¡Í¨µãÕó¹ÜµÄµÚÒ»ÁÐµÄLED£¬µãÕó¹ÜµÄµÚÒ»ÁÐµÄLED×÷ÎªÏÔÊ¾LED*/
+COL1=1;/*é€‰é€šç‚¹é˜µç®¡çš„ç¬¬ä¸€åˆ—çš„LEDï¼Œç‚¹é˜µç®¡çš„ç¬¬ä¸€åˆ—çš„LEDä½œä¸ºæ˜¾ç¤ºLED*/
 
 while(1)
 	{
-	PORTD=0B00000001;//16½øÖÆÐ´·¨0xfe  2½øÖÆÐ´·¨0B00000001
- 	/*µãÕó¹ÜÁÁ»òÃð*/
-	Delay10Ms(5);/*ÑÓÊ±50mS*/
+	PORTD=0B00000001;//16è¿›åˆ¶å†™æ³•0xfe  2è¿›åˆ¶å†™æ³•0B00000001
+ 	/*ç‚¹é˜µç®¡äº®æˆ–ç­*/
+	Delay10Ms(5);/*å»¶æ—¶50mS*/
 	PORTD=0B00000000; //0x00; 0B00000000
-	Delay10Ms(5);/*ÑÓÊ±50mS*/
+	Delay10Ms(5);/*å»¶æ—¶50mS*/
  	} 
 }
