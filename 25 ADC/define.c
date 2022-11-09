@@ -4,9 +4,6 @@
 const unsigned char DB[]=
 {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f}; //0~9
 
-const unsigned char DB_dot[]=
-{0xbf,0x86,0xdb,0xcf,0xe6,0xed,0xfd,0x87,0xff,0xef}; //0~9(含點)
-
 const unsigned char ScanSeg[]={0x02,0x04,0x08,0x20}; //七段掃描
 
 void display (uchar* a)
@@ -16,7 +13,7 @@ void display (uchar* a)
 	{
 		if (i==2)
 		{
-			PORTD=DB_dot[*(a+i)];  //將a陣列資料給七段顯示
+			PORTD=DB[*(a+i)]|0x80;  //顯示dot
 		}
 		else
 		{
@@ -52,12 +49,12 @@ uint get_ad(void)
 		ADCON0bits.GO=1;
 		while (ADCON0bits.GO);
 		adval=ADRESH;
-		adval=adval<<8|ADRESL;
+		adval=(adval<<8)|ADRESL;
 		sum+=adval;
 	}
 	sum/=30;       //消除ADC的誤差值
 	adcVol=(sum/1023.0)*5.0;  //將0~1023 轉成0~5V
-	adcVol=adcVol*(1.0+(30000.0/7500.0));  // 知道分壓求VCC
+	adcVol*=(1.0+(30000.0/7500.0));  // 知道分壓求VCC
 	return (adcVol*100);			
 }
 

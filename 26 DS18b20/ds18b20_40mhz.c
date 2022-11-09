@@ -35,11 +35,13 @@ unsigned char ack_ds18b20(void)
      unsigned char Value=1;
      DQ_HIGH(); /*釋放匯流排等電阻拉高匯流排*/
      while(DQ==1); 
-     while(DQ==0)Value=0; 
+     while(DQ==0)
+          Value=0; 
      /*接收到應答訊號*/
      /*=====晶振改變時，修改下句=====*/
      Delay10TCYx(20);/*延時20us*/ 
-     if (Value) return 0;
+     if (Value) 
+          return 0;
      return 1;
 } 
 
@@ -54,18 +56,19 @@ unsigned int read_ds18b20(void)
      int i=0;
      unsigned int u=0;
      for (i=0;i<16;i++)
-     	{   
-           DQ_LOW(); 
-           /*=====晶振改變時，修改下句=====*/
-           Delay10TCYx(2);/*從高拉至低電平,產生讀時間隙,2us*/
-           u>>=1;
-           DQ_HIGH(); 
-           Delay10TCYx(5);/*此句必須要加，否則由於剛設定為輸入，訊號不穩定，立即讀入時會是錯誤值*/
-           if(DQ) u|=0x8000;/*讀入位*/
-           /*=====晶振改變時，修改下句=====*/
-           Delay10TCYx(56);//56us 
-         	}
-      return (u);
+     {   
+          DQ_LOW(); 
+          /*=====晶振改變時，修改下句=====*/
+          Delay10TCYx(2);/*從高拉至低電平,產生讀時間隙,2us*/
+          u>>=1;
+          DQ_HIGH(); 
+          Delay10TCYx(5);/*此句必須要加，否則由於剛設定為輸入，訊號不穩定，立即讀入時會是錯誤值*/
+          if(DQ) 
+               u|=0x8000;/*讀入位*/
+          /*=====晶振改變時，修改下句=====*/
+          Delay10TCYx(56);//56us 
+     }
+     return (u);
 }
 
  //**********************************************************************
@@ -78,7 +81,7 @@ void write_ds18b20(unsigned int ku)
 {  
      int i=0;
      for (i=0;i<8;i++)
-     	{ 
+     { 
           DQ_LOW(); 
           /*=====晶振改變時，修改下句=====*/
           Delay10TCYx(2);/*從高拉至低電平,產生寫時間隙,2us*/
@@ -88,7 +91,7 @@ void write_ds18b20(unsigned int ku)
           DQ_HIGH(); /*釋放匯流排*/
           Delay10TCYx(2);/*2us*/
           ku>>=1;
-     	}
+     }
 }
  
 //**********************************************************************
@@ -117,14 +120,14 @@ unsigned int get_temp(void)
      tp=read_ds18b20();/*讀出溫度*/
      /*-----------------------------------*/         
      if(tp>0x0fff) /*判斷是否為負溫，若是負溫，取反加一，乘6.25*/
-           {      
-            tp=~tp;
-            tp++;
-            tp=(unsigned int)(tp*6.25);
-            tp|=0xC000;
-           }
+     {      
+          tp=~tp;
+          tp++;
+          tp=(unsigned int)(tp*6.25);
+          tp|=0xC000;
+     }
      else
-           tp=(unsigned int)(tp*6.25);/*是正溫*/
+          tp=(unsigned int)(tp*6.25);/*是正溫*/
      return(tp);
 }
 

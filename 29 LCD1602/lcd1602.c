@@ -181,7 +181,8 @@ void LCD_setxy(char x,char y) /*設定顯示位置，行x=1/2,列y=1~16的任意
 
 void LCD_wrstr(const rom char *s)/*寫入要顯示的字串*/
 {
- for(;*s!='\0';s++)LCD_wrchar(*s);
+	for(;*s!='\0';s++)
+		LCD_wrchar(*s);
 }
 
 
@@ -193,20 +194,20 @@ void LCD_wrul(unsigned long num)/*寫入要顯示的無符號長整型數*/
 	ultoa(num,str);/*將無符號長整型數轉換為字串*/
 	LCD_wrcmd(CUR_AUTO_L);/*設定游標在文字插入后自動左移*/
 	while(str[i]!='\0')/*搜索字串結束符*/
-		{
+	{
 		i++;	
-		}
+	}
 	while(i>0)/*顯示前面的有效數字*/
-		{
+	{
 		i--;
 		LCD_wrchar(str[i]);
 		j++;
-		}
+	}
 	while(j<10)/*往前寫滿10位，也就是前面都寫空格*/
-		{
+	{
 		LCD_wrchar(0x20);	
 		j++;
-		}
+	}
 	LCD_wrcmd(CUR_AUTO_R);/*設定游標在文字插入后自動右移*/
 }
 
@@ -219,42 +220,47 @@ void LCD_wrlval(unsigned long num,unsigned char bits,unsigned char dp)/*寫入�
 	ultoa(num,str);/*將無符號長整型數轉換為字串*/
 	LCD_wrcmd(CUR_AUTO_L);/*設定游標在文字插入后自動左移*/
 	while(str[i]!='\0')/*搜索字串結束符*/
-		{
+	{
 		i++;	
-		}
+	}
 	if (i>bits)/*要顯示的數據比規定的顯示位數多，數據顯示溢出*/
-		{
+	{
 		while(j<bits)/*往前寫滿規定的位數，也就是前面都寫空格，直到規定的位數*/
-			{
+		{
 			LCD_wrchar('-');	/*規定的位全部寫-，表示數據溢出*/
 			j++;
 			if (j==dp) LCD_wrchar('.');/*插入小數點*/
-			}
 		}
+	}
 	else
-		{
+	{
 		while(i>0)/*顯示前面的有效數字*/
-			{
+		{
 			i--;
 			LCD_wrchar(str[i]);
 			j++;
 			if (j==dp) LCD_wrchar('.');/*插入小數點*/
-			}
-		while(j<bits)/*往前寫滿規定的位數，也就是前面都寫空格，直到規定的位數*/
-			{
-			if (j==dp) LCD_wrchar('.');/*插入小數點*/
-			if (j<=dp) LCD_wrchar('0');/*小數點前後補0字元*/	
-			else LCD_wrchar(0x20);	/*小數點前後補空字元*/
-			j++;
-			}
 		}
+		while(j<bits)/*往前寫滿規定的位數，也就是前面都寫空格，直到規定的位數*/
+		{
+			if (j==dp) 
+				LCD_wrchar('.');/*插入小數點*/
+
+			if (j<=dp) 
+				LCD_wrchar('0');/*小數點前後補0字元*/
+			else 
+				LCD_wrchar(0x20);	/*小數點前後補空字元*/
+
+			j++;
+		}
+	}
 	LCD_wrcmd(CUR_AUTO_R);/*設定游標在文字插入后自動右移*/
 }
 
 
 void wait_until_LCDready(void) /*檢測忙標誌，忙則等待*/
 {
-  	LCD_EN=0;/*此句必須加，否則後面RS RW輸出電平后，液晶屏出現游標復位的現象*/
+	LCD_EN=0;/*此句必須加，否則後面RS RW輸出電平后，液晶屏出現游標復位的現象*/
 	LCD_RS=0;
 	TRIS_LCD_DATA=0x0ff;/*設定微控制器LCD數據引腳全為輸入*/
 	LCD_RW=1;
@@ -263,18 +269,16 @@ void wait_until_LCDready(void) /*檢測忙標誌，忙則等待*/
 	Nop();
 	Nop();
 	Nop();
-    	while(LCD_BUSY==1);/*LCD忙，則原地等待*/
-     LCD_EN=0;
+	while(LCD_BUSY==1);/*LCD忙，則原地等待*/
+	LCD_EN=0;
 }
-
-
 
 void CG_Write(void)/*建立自定義字元塊*/
 {
 	int i;
 	LCD_wrcmd(SET_ADDR_CGRAM);/*字元發生器CGRAM地址設定*/
 	for(i=0;i<64;i++)
-		{
+	{
 		LCD_wrchar(cgtab[i]);
-		};
+	};
 }

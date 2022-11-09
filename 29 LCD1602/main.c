@@ -7,27 +7,27 @@
 #include "lcd1602.h"
 void main(void)
 {
-k18_init(); 
-LCD_init();
-LCD_setxy(1,1);
-LCD_wrstr("-WWW.HJMCU.COM-");/*顯示本站網地址*/
-LCD_setxy(2,1);
-LCD_wrstr("A");/*顯示單個字元A*/
-LCD_wrstr("b");/*顯示單個字元b*/
-LCD_wrstr("7");/*顯示單個數字字元7*/
+    k18_init(); 
+    LCD_init();
+    LCD_setxy(1,1);
+    LCD_wrstr("-WWW.DENNIS.COM-");/*顯示本站網地址*/
+    LCD_setxy(2,1);
+    LCD_wrstr("A");/*顯示單個字元A*/
+    LCD_wrstr("b");/*顯示單個字元b*/
+    LCD_wrstr("7");/*顯示單個數字字元7*/
 
-/*顯示自定義字元*/
-LCD_setxy(2,9);
-LCD_wrchar(USER_CHAR1);		
-LCD_wrchar(USER_CHAR2);
-LCD_wrchar(USER_CHAR3);	
-LCD_wrchar(USER_CHAR4);	
-LCD_wrchar(USER_CHAR5);	
-LCD_wrchar(USER_CHAR6);	
-LCD_wrchar(USER_CHAR7);	
-LCD_wrchar(USER_CHAR8);
+    /*顯示自定義字元*/
+    LCD_setxy(2,9);
+    LCD_wrchar(USER_CHAR1);		
+    LCD_wrchar(USER_CHAR2);
+    LCD_wrchar(USER_CHAR3);	
+    LCD_wrchar(USER_CHAR4);	
+    LCD_wrchar(USER_CHAR5);	
+    LCD_wrchar(USER_CHAR6);	
+    LCD_wrchar(USER_CHAR7);	
+    LCD_wrchar(USER_CHAR8);
 
 
-while(1);
+    while(1);
 
 }

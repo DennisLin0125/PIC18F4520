@@ -264,8 +264,8 @@ void wait_until_LCDready(void) /*檢測忙標誌，忙則等待*/
 	Nop();
 	Nop();
 	Nop();
-    	while(LCD_BUSY==1);/*LCD忙，則原地等待*/
-     	LCD_EN=0;
+	while(LCD_BUSY==1);/*LCD忙，則原地等待*/
+	LCD_EN=0;
 }
 
 
