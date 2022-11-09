@@ -43,41 +43,43 @@ void main()
 	TRIS_CLK=1;
 	ComIni();/*串列埠初始化*/
 	
-//OpenUSART( USART_TX_INT_ON &	/*允許發送中斷*/
-//USART_RX_INT_OFF &				/*禁止接收中斷*/
-//USART_ASYNCH_MODE & 			/*非同步模式*/
-//USART_EIGHT_BIT &				/*8 位發送接收*/
-//USART_BRGH_HIGH,				/*高波特率*/
-//25 );/*設定波特率57600,系統時鐘11.0592MHZ*/
+	//OpenUSART( USART_TX_INT_ON &	/*允許發送中斷*/
+	//USART_RX_INT_OFF &				/*禁止接收中斷*/
+	//USART_ASYNCH_MODE & 			/*非同步模式*/
+	//USART_EIGHT_BIT &				/*8 位發送接收*/
+	//USART_BRGH_HIGH,				/*高波特率*/
+	//25 );/*設定波特率57600,系統時鐘11.0592MHZ*/
 
-//WriteUSART( PORTD ); //write value of PORTD
+	//WriteUSART( PORTD ); //write value of PORTD
 
 
 	Delay(0xffff);
 
- 	while(1)
- 		{ 
+	while(1)
+	{ 
 		while(CLK);/*時鐘線高電平，原地等待*/
 
 		switch ( bits ) /*時鐘線變低，根據PS2數據幀的位計數器的值進行不同的處理*/
-			{
+		{
 			case 0:
-    				bits++;
-    				break; 
-   			case 9: 
-     			bits++;
-    				break; 
-   			case 10: 
-     			UartTx(REC);/*通過串列埠發送一個數據幀內容*/
-     			bits=0;
-    				break; 
+				bits++;
+				break; 
+			case 9: 
+				bits++;
+				break; 
+			case 10: 
+				UartTx(REC);/*通過串列埠發送一個數據幀內容*/
+				bits=0;
+				break; 
 			default:
 				REC=REC>>1;/*REC循環右移1位*/
-				if (DATA==1) REC|=0b10000000;/*讀入數據線數據到REC最高位*/
-				bits++;
-    				break; 
-			}
 
-     	 while(!CLK);/*時鐘線低電平，原地等待*/
-		}   
+			if (DATA==1) 
+				REC|=0b10000000;/*讀入數據線數據到REC最高位*/
+			bits++;
+			break; 
+		}
+
+		while(!CLK);/*時鐘線低電平，原地等待*/
+	}   
 } 
