@@ -21,7 +21,7 @@ char time[5];//定義格式化時間存放表格
 ***********************************************************************/
 void ds1302_init(void)
 {
-/*_________________________________新加*/ 
+/*_____________新加____________*/ 
    RST=0;/* RST*/
    TRIS_RST=OUT;  
 
@@ -53,8 +53,9 @@ void ds1302_write(unsigned char time_tx)
 	{
 		IO=0; //先設定數據為0
 		SCLK=0; //時鐘訊號拉低
-		if(time_tx&0x01!=0) IO=1; //判斷待發送的數據位是0或1
-		time_tx=time_tx>>1; //待發送的數據右移1位
+		if(time_tx&0x01!=0) 
+			IO=1; //判斷待發送的數據位是0或1
+		time_tx>>=1; //待發送的數據右移1位
 		SCLK=1; //拉高時鐘訊號
 	}
     SCLK=0; //寫完一個位元組，拉低時鐘訊號
@@ -167,82 +168,55 @@ void get_date(void)
 /******************************************************************** 
 函 數 名：display_time()顯示時間函式
 功    能：在LCD屏上顯示目前時間，顯示格式：**：**：**
-入口參數：無
-返 回 值：無
 ***********************************************************************/
 void display_time(void)
 {
-	int i;
+	int i,k;
 	get_time();//呼叫取時間函式
 
-	i=time[5]; //得時的十位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
+	for(k=5;k<=0;k--)
+	{
+		/* K=5:得 小時 的十位
+		   K=4:得 小時 的個位
+		   K=3:得 分鐘 的十位
+		   K=2:得 分鐘 的個位
+		   K=1:得 秒數 的十位
+		   K=0:得 秒數 的個位
+		*/
+		i=time[k]; //得時的十位
+		i|=0x30;//BCD轉換成ASCII碼 
+		LCD_wrchar(i);//顯示
 
-	i=time[4]; //得時的個位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
-
-	LCD_wrchar(':');/*顯示":"*/
-
-	i=time[3]; //得分的十位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
-
-	i=time[2]; //得分的個位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
-
-	LCD_wrchar(':');/*顯示":"*/
-
-	i=time[1]; //得秒的十位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
-
-	i=time[0]; //得秒的個位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
+		if((k==4)or(k==2))
+			LCD_wrchar(':');/*顯示":"*/	
+	}
 }
 
 /******************************************************************** 
 函 數 名：display_date()顯示日期函式
 功    能：在LCD屏上顯示目前日期，顯示格式：**年**月**日
-入口參數：無
-返 回 值：無
 ***********************************************************************/
 void display_date(void)
 {
 	int i;
 	get_date();/*呼叫取日期函式*/
 
-	i=date[5]; //得年的十位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
+	for(k=5;k<=0;k--)
+	{
+		/* K=5:得 年 的十位
+		   K=4:得 年 的個位
+		   K=3:得 月 的十位
+		   K=2:得 月 的個位
+		   K=1:得 日 的十位
+		   K=0:得 日 的個位
+		*/
+		i=date[k]; //得年的十位
+		i|=0x30;//BCD轉換成ASCII碼
+		LCD_wrchar(i);//顯示
 
-	i=date[4]; //得年的個位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
-
-	LCD_wrchar(USER_CHAR1);/*在LCD屏上顯示單個預定義字元:年*/
-
-	i=date[3]; //得月的十位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
-
-	i=date[2]; //得月的個位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
-
-	LCD_wrchar(USER_CHAR2);/*在LCD屏上顯示單個預定義字元:月*/
-
-	i=date[1]; //得日的十位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
-
-	i=date[0]; //得日的個位
-	i|=0b00110000;//BCD轉換成ASCII碼
-	LCD_wrchar(i);//顯示
-	
-	LCD_wrchar(USER_CHAR3);/*在LCD屏上顯示單個預定義字元:日*/
+		if(k==4)LCD_wrchar(USER_CHAR1);/*在LCD屏上顯示單個預定義字元:年*/	
+		else if (k==2)LCD_wrchar(USER_CHAR2);/*在LCD屏上顯示單個預定義字元:月*/
+		else if (k==0)LCD_wrchar(USER_CHAR3);/*在LCD屏上顯示單個預定義字元:日*/
+	}
 }
 

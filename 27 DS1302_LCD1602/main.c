@@ -1,4 +1,3 @@
-//開發板設定：RS、RW、EN這3位短路帽上移， RE0 RE1 RE3 這3位短路帽上移 其餘採用出廠預設設定。
 /*DS1302數字鐘實驗*/
 #include <p18cxxx.h>
 #include "k18.h"
